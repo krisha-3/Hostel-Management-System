@@ -2,7 +2,23 @@ const pool = require("../config/db");
 
 const getAllRooms = async (req, res) => {
   try {
-    const result = await pool.query("SELECT * FROM rooms ORDER BY room_number");
+    const result = await pool.query(`
+      SELECT
+        rooms.id,
+        rooms.room_number,
+        rooms.floor_name,
+        rooms.total_beds,
+        COUNT(students.id) AS occupied_beds
+      FROM rooms
+      LEFT JOIN students
+      ON rooms.id = students.room_id
+      GROUP BY
+        rooms.id,
+        rooms.room_number,
+        rooms.floor_name,
+        rooms.total_beds
+      ORDER BY rooms.room_number
+    `);
 
     res.status(200).json(result.rows);
   } catch (error) {
@@ -18,10 +34,9 @@ const getRoomById = async (req, res) => {
   try {
     const { id } = req.params;
 
-    const roomResult = await pool.query(
-      "SELECT * FROM rooms WHERE id = $1",
-      [id]
-    );
+    const roomResult = await pool.query("SELECT * FROM rooms WHERE id = $1", [
+      id,
+    ]);
 
     if (roomResult.rows.length === 0) {
       return res.status(404).json({
@@ -32,7 +47,7 @@ const getRoomById = async (req, res) => {
 
     const studentsResult = await pool.query(
       "SELECT id, full_name FROM students WHERE room_id = $1",
-      [id]
+      [id],
     );
 
     const room = roomResult.rows[0];

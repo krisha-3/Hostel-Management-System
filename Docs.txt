@@ -47,3 +47,19 @@ VALUES
 ('S5','Second'),
 ('S6','Second');
 
+
+GET     /api/dashboard
+
+GET     /api/rooms
+GET     /api/rooms/:id
+
+GET     /api/students
+GET     /api/students?search=name
+GET     /api/students/:id
+
+POST    /api/students
+
+PUT     /api/students/:id
+PUT     /api/students/:id/transfer
+
+DELETE  /api/students/:id
