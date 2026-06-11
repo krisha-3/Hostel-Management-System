@@ -1,0 +1,49 @@
+Rooms
+CREATE TABLE rooms (
+    id SERIAL PRIMARY KEY,
+    room_number VARCHAR(10) UNIQUE NOT NULL,
+    floor_name VARCHAR(20) NOT NULL,
+    total_beds INTEGER NOT NULL DEFAULT 4
+);
+
+Students
+CREATE TABLE students (
+    id SERIAL PRIMARY KEY,
+    full_name VARCHAR(100) NOT NULL,
+    email VARCHAR(100),
+    phone VARCHAR(15),
+    address TEXT,
+    join_date DATE NOT NULL,
+    room_id INTEGER REFERENCES rooms(id)
+);
+
+Alter Students
+ALTER TABLE students
+ADD COLUMN gender VARCHAR(10),
+ADD COLUMN guardian_name VARCHAR(100),
+ADD COLUMN guardian_phone VARCHAR(15);
+
+Rooms
+INSERT INTO rooms (room_number, floor_name)
+VALUES
+('G1','Ground'),
+('G2','Ground'),
+('G3','Ground'),
+('G4','Ground'),
+('G5','Ground'),
+('G6','Ground'),
+
+('F1','First'),
+('F2','First'),
+('F3','First'),
+('F4','First'),
+('F5','First'),
+('F6','First'),
+
+('S1','Second'),
+('S2','Second'),
+('S3','Second'),
+('S4','Second'),
+('S5','Second'),
+('S6','Second');
+
